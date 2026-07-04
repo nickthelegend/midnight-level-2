@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../",
+  "sources": ["contract/umbra.compact", "compiler/standard-library.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EA0CA;;;;;;;;;;;;;MAYA,AAAA,IAWC;;;;;cAXmB,YAA4B;;;;;;;;;;;yCAA5B,YAA4B;;;;;;;iEAA5B,YAA4B;;;OAW/C;MAID,AAAA,QAWC;;;;;;;;;;;;;;;;;;;;;;OAAA;;;;;;;;;;GAnCA;EAHD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAbA;;;;;;;;;yEAAgC;IAChC;;;;;;;;;yEAA+C;IAC/C;;;;;;;;;yEAAgC;IAChC;;;;;;;;;yEAAmC;IAWjC;;;;;;;;;yEAAK;UACL,KAAO;IAAP;;;;;;;2HAAA,KAAO;;yEAAA;;;;;;;GACR;ECtBD,AAAA,QAAuB,0CACkB;EAGzC,AAAA;EA3BA,AAAA,kBAAA;oEAAA;;;EDuCA,AAAA,iBAAoC;;0DAApC,cAAoC;;;;;;;;;;;;;;GAAA;EAUpC,AAAA,YAEC,CAFiB,IAAa;;mCAC4C,IAAE;GAC5E;EAGD,AAAA,OAWC,4BAXmB,YAA4B;oDACvC;;;;;;;;;;;yHAAK;;;;UACN,IAAqB;UAI3B,KAAM,qBAAsB,IAAE;IAA9B;;;;;;;2HAAA,KAAM;;yEAAA;UACN,KAAO,gBAAmC,YAAU;IAApD;;;;;;;2HAAA,KAAO;;yEAAA;IAEP;;;;;;;;;yEAAK;UACL,KAAW;IAAX;;;;;;;;;;6FAAA,KAAW;;;;wEAAA;;GACZ;EAID,AAAA,WAWC;oDAVQ;;;;;;;;;;;yHAAK;;;;UACN,IAAqB;kEAIpB;;;;;;;;;;;uIAAM;4DAAc,IAAE;;IAG7B;;;;;;;;;yEAAK;UACL,KAAO;IAAP;;;;;;;2HAAA,KAAO;;yEAAA;;GACR;;;;;;;;;;;;;;;;;;;;IAnDD;qCAAA;;;;;;;;;;;0GAAgC;KAAA;IAChC;qCAAA;;;;;;;;;;;0GAA+C;KAAA;IAC/C;qCAAA;;;;;;;;;;;0GAAgC;KAAA;IAChC;qCAAA;;;;;;;;;;;0GAAmC;KAAA;;;;;;;;;;"
+}

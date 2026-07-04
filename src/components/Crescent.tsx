@@ -6,7 +6,9 @@
  */
 export function Crescent({ phase, proving = false }: { phase: 0 | 1 | 2 | 3; proving?: boolean }) {
   // How far the shadow disc is pushed left — larger reveals more lit crescent.
-  const shadowOffset = [-6, 26, 54, 88][phase];
+  // Even phase 0 keeps a clear crescent: this is the *waxing crescent*, the
+  // first thread of light, never fully dark.
+  const shadowOffset = [46, 64, 84, 106][phase];
   return (
     <div className="moon-stage">
       <div className="moon-stage__glow" style={{ opacity: 0.15 + phase * 0.28 }} />
@@ -17,10 +19,10 @@ export function Crescent({ phase, proving = false }: { phase: 0 | 1 | 2 | 3; pro
         aria-label={`Waxing crescent, phase ${phase} of 3`}
       >
         <defs>
-          <radialGradient id="litGrad" cx="66%" cy="34%" r="78%">
-            <stop offset="0" stopColor="#fdf6df" />
-            <stop offset="0.55" stopColor="#f4e9c8" />
-            <stop offset="1" stopColor="#c9ba8c" />
+          <radialGradient id="litGrad" cx="74%" cy="40%" r="88%">
+            <stop offset="0" stopColor="#fef8e6" />
+            <stop offset="0.5" stopColor="#f4e9c8" />
+            <stop offset="1" stopColor="#dccc9c" />
           </radialGradient>
           <clipPath id="moonClip">
             <circle cx="120" cy="120" r="100" />

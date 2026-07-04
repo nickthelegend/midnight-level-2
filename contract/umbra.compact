@@ -1,0 +1,81 @@
+pragma language_version >= 0.16;
+
+import CompactStandardLibrary;
+
+// =============================================================================
+// Umbra — an anonymous, verifiable notice board.  ·  Waxing Crescent build.
+//
+// Level 1 (New Moon) sealed this contract in shadow: it compiled and was tested,
+// but nothing could see it. Level 2 (Waxing Crescent) gives it a face — a real
+// frontend, a real wallet (Lace), a real deployment on the public testnet.
+//
+// The privacy trick is unchanged, because it is the whole point:
+//   • Anyone holding a secret key can pin a public notice everyone can read.
+//   • The chain never learns *who* posted — only a one-way pseudonymous
+//     commitment derived from the secret.
+//   • Taking a notice down requires PROVING, in zero knowledge, that you are the
+//     same secret-holder who posted it — without ever revealing the secret.
+//
+// PUBLIC ledger state lives on-chain forever. The PRIVATE witness never leaves
+// the caller's machine. `disclose()` is the deliberate, auditable gate between
+// the two worlds — a privacy leak becomes a compile error.
+// =============================================================================
+
+// The board is either free to post to, or currently holding a notice.
+export enum BoardState { vacant, occupied }
+
+// ---------------------------------------------------------------------------
+// PUBLIC ledger state — replicated on-chain, readable by everyone, forever.
+// ---------------------------------------------------------------------------
+export ledger state: BoardState;                 // is the board free or taken?
+export ledger message: Maybe<Opaque<"string">>;  // the notice text (public once posted)
+export ledger poster: Bytes<32>;                 // pseudonymous commitment of the author
+export ledger noticeCount: Counter;              // how many notices have ever been posted
+
+// ---------------------------------------------------------------------------
+// PRIVATE witness — supplied off-chain by the caller's local state.
+// It never appears in the transaction, the ledger, or the proof output.
+// The ZK proof attests "I know an sk such that ..." without revealing sk.
+// ---------------------------------------------------------------------------
+witness localSecretKey(): Bytes<32>;
+
+// On deploy the board starts empty.
+constructor() {
+  state = BoardState.vacant;
+  message = none<Opaque<"string">>();
+}
+
+// Derive a stable public pseudonym from the private secret key.
+// Domain-separated so this hash can't be confused with any other use of sk.
+circuit pseudonym(sk: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<2, Bytes<32>>>([pad(32, "umbra:pseudonym"), sk]);
+}
+
+// Pin a new notice. The message is public; the author is not.
+export circuit post(newMessage: Opaque<"string">): [] {
+  assert(state == BoardState.vacant, "Umbra: the board is already occupied");
+  const sk = localSecretKey();
+
+  // disclose() is the deliberate boundary: we publish ONLY the pseudonymous
+  // commitment (a one-way hash of the secret), never the secret itself.
+  poster = disclose(pseudonym(sk));
+  message = disclose(some<Opaque<"string">>(newMessage));
+
+  state = BoardState.occupied;
+  noticeCount.increment(1);
+}
+
+// Take the current notice down. Only the original author can do this, proven
+// in zero knowledge: we show the stored pseudonym re-derives from *our* secret.
+export circuit takeDown(): [] {
+  assert(state == BoardState.occupied, "Umbra: there is nothing to take down");
+  const sk = localSecretKey();
+
+  // No disclose() here — the comparison feeds an assertion, so the secret and
+  // its derived pseudonym stay private. The chain only learns pass/fail.
+  assert(poster == pseudonym(sk),
+         "Umbra: only the original poster may take this notice down");
+
+  state = BoardState.vacant;
+  message = none<Opaque<"string">>();
+}
